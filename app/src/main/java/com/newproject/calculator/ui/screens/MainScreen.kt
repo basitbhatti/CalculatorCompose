@@ -15,19 +15,18 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.newproject.calculator.CalculatorAction
+import com.newproject.calculator.CalculatorOperation
+import com.newproject.calculator.CalculatorViewModel
 import com.newproject.calculator.ui.theme.BG
 import com.newproject.calculator.ui.theme.ButtonBGClear
 import com.newproject.calculator.ui.theme.ButtonBGNum
@@ -37,13 +36,8 @@ import com.newproject.calculator.ui.theme.TextColor
 @Composable
 fun MainScreen() {
 
-    val context = LocalContext.current
-
-    val (text, setText) = remember { mutableStateOf("") }
-
-    var isOperatorInLast by remember {
-        mutableStateOf(false)
-    }
+    val viewModel = viewModel<CalculatorViewModel>()
+    val state = viewModel.state
 
     Column(
         Modifier
@@ -60,8 +54,9 @@ fun MainScreen() {
             horizontalAlignment = Alignment.End
         ) {
             Text(
-                text = text,
+                text = state.number1 + (state.operation?.symbol ?: "") + state.number2,
                 fontSize = 38.sp,
+                maxLines = 2,
                 lineHeight = 35.sp,
                 color = TextColor,
                 textAlign = TextAlign.End
@@ -89,10 +84,10 @@ fun MainScreen() {
 
                 Button(modifier = Modifier
                     .fillMaxHeight()
-                    .weight(0.25f),
+                    .weight(0.5f),
                     colors = ButtonDefaults.buttonColors(containerColor = ButtonBGClear),
                     onClick = {
-                        setText("")
+                        viewModel.onAction(CalculatorAction.Clear)
                     }) {
                     Text(
                         text = "AC",
@@ -102,23 +97,21 @@ fun MainScreen() {
                     )
                 }
                 Spacer(modifier = Modifier.width(15.dp))
-                CalcButton(modifier = Modifier.weight(0.25f),
-                    text = "±",
-                    bg = ButtonBGClear,
-                    color = TextColor,
+                Button(modifier = Modifier
+                    .fillMaxHeight()
+                    .weight(0.25f),
+                    colors = ButtonDefaults.buttonColors(containerColor = ButtonBGClear),
                     onClick = {
+                        viewModel.onAction(CalculatorAction.Delete)
+                    }) {
+                    Text(
+                        text = "Del",
+                        fontSize = 22.sp,
+                        color = TextColor,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
 
-                    })
-
-                Spacer(modifier = Modifier.width(15.dp))
-
-                CalcButton(modifier = Modifier.weight(0.25f),
-                    text = "%",
-                    bg = ButtonBGClear,
-                    color = TextColor,
-                    onClick = {
-
-                    })
 
                 Spacer(modifier = Modifier.width(15.dp))
 
@@ -127,15 +120,7 @@ fun MainScreen() {
                     bg = ButtonBGOp,
                     color = BG,
                     onClick = {
-                        if (isOperatorInLast) {
-                            val newText =
-                                text.substring(0, text.length - 1) + "÷" // Replace last char
-                            setText(newText)
-                        } else {
-                            setText(text + "÷")
-                        }
-                        isOperatorInLast = true
-
+                        viewModel.onAction(CalculatorAction.Operation(CalculatorOperation.Divide))
                     })
 
             }
@@ -155,10 +140,7 @@ fun MainScreen() {
                     bg = ButtonBGNum,
                     color = TextColor,
                     onClick = {
-
-                        isOperatorInLast = false;
-                        setText(text + "7")
-
+                        viewModel.onAction(CalculatorAction.Number(7))
 
                     })
 
@@ -169,10 +151,7 @@ fun MainScreen() {
                     bg = ButtonBGNum,
                     color = TextColor,
                     onClick = {
-                        isOperatorInLast = false;
-                        setText(text + "8")
-
-
+                        viewModel.onAction(CalculatorAction.Number(8))
                     })
 
                 Spacer(modifier = Modifier.width(15.dp))
@@ -182,10 +161,7 @@ fun MainScreen() {
                     bg = ButtonBGNum,
                     color = TextColor,
                     onClick = {
-                        isOperatorInLast = false;
-                        setText(text + "9")
-
-
+                        viewModel.onAction(CalculatorAction.Number(9))
                     })
 
                 Spacer(modifier = Modifier.width(15.dp))
@@ -195,14 +171,7 @@ fun MainScreen() {
                     bg = ButtonBGOp,
                     color = BG,
                     onClick = {
-                        if (isOperatorInLast) {
-                            val newText = text.substring(0, text.length - 1) + "x"
-                            setText(newText)
-                        } else {
-                            setText(text + "x")
-                        }
-                        isOperatorInLast = true
-
+                        viewModel.onAction(CalculatorAction.Operation(CalculatorOperation.Multiply))
                     })
             }
 
@@ -221,8 +190,7 @@ fun MainScreen() {
                     bg = ButtonBGNum,
                     color = TextColor,
                     onClick = {
-                        isOperatorInLast = false
-                        setText(text + "4")
+                        viewModel.onAction(CalculatorAction.Number(4))
                     })
 
                 Spacer(modifier = Modifier.width(15.dp))
@@ -232,10 +200,7 @@ fun MainScreen() {
                     bg = ButtonBGNum,
                     color = TextColor,
                     onClick = {
-                        setText(text + "5")
-
-                        isOperatorInLast = false
-
+                        viewModel.onAction(CalculatorAction.Number(5))
                     })
 
                 Spacer(modifier = Modifier.width(15.dp))
@@ -245,9 +210,7 @@ fun MainScreen() {
                     bg = ButtonBGNum,
                     color = TextColor,
                     onClick = {
-                        setText(text + "6")
-
-                        isOperatorInLast = false
+                        viewModel.onAction(CalculatorAction.Number(6))
                     })
 
                 Spacer(modifier = Modifier.width(15.dp))
@@ -257,15 +220,7 @@ fun MainScreen() {
                     bg = ButtonBGOp,
                     color = BG,
                     onClick = {
-                        if (isOperatorInLast) {
-                            val newText =
-                                text.substring(0, text.length - 1) + "-" // Replace last char
-                            setText(newText)
-                        } else {
-                            setText(text + "-")
-                        }
-                        isOperatorInLast = true
-
+                        viewModel.onAction(CalculatorAction.Operation(CalculatorOperation.Subtract))
                     })
 
             }
@@ -285,9 +240,7 @@ fun MainScreen() {
                     bg = ButtonBGNum,
                     color = TextColor,
                     onClick = {
-                        setText(text + "1")
-                        isOperatorInLast = false
-
+                        viewModel.onAction(CalculatorAction.Number(1))
                     })
 
                 Spacer(modifier = Modifier.width(15.dp))
@@ -298,10 +251,7 @@ fun MainScreen() {
                     bg = ButtonBGNum,
                     color = TextColor,
                     onClick = {
-                        setText(text + "2")
-
-                        isOperatorInLast = false
-
+                        viewModel.onAction(CalculatorAction.Number(2))
                     })
 
                 Spacer(modifier = Modifier.width(15.dp))
@@ -311,9 +261,8 @@ fun MainScreen() {
                     bg = ButtonBGNum,
                     color = TextColor,
                     onClick = {
-                        setText(text + "3")
+                        viewModel.onAction(CalculatorAction.Number(3))
 
-                        isOperatorInLast = false
 
                     })
 
@@ -324,15 +273,7 @@ fun MainScreen() {
                     bg = ButtonBGOp,
                     color = BG,
                     onClick = {
-                        if (isOperatorInLast) {
-                            val newText =
-                                text.substring(0, text.length - 1) + "+" // Replace last char
-                            setText(newText)
-                        } else {
-                            setText(text + "+")
-                        }
-                        isOperatorInLast = true
-
+                        viewModel.onAction(CalculatorAction.Operation(CalculatorOperation.Add))
                     })
 
             }
@@ -352,10 +293,7 @@ fun MainScreen() {
                     bg = ButtonBGNum,
                     color = TextColor,
                     onClick = {
-                        setText(text + "0")
-
-                        isOperatorInLast = false
-
+                        viewModel.onAction(CalculatorAction.Number(0))
                     })
 
                 Spacer(modifier = Modifier.width(15.dp))
@@ -365,14 +303,7 @@ fun MainScreen() {
                     bg = ButtonBGNum,
                     color = TextColor,
                     onClick = {
-                        if (isOperatorInLast) {
-                            val newText = text.substring(0, text.length - 1) + "."
-                            setText(newText)
-                        } else {
-                            setText(text + ".")
-                        }
-                        isOperatorInLast = true
-
+                        viewModel.onAction(CalculatorAction.Decimal)
                     })
 
                 Spacer(modifier = Modifier.width(15.dp))
@@ -381,7 +312,9 @@ fun MainScreen() {
                     text = "=",
                     bg = ButtonBGOp,
                     color = BG,
-                    onClick = {})
+                    onClick = {
+                        viewModel.onAction(CalculatorAction.Calculate)
+                    })
             }
 
             Spacer(modifier = Modifier.height(15.dp))
