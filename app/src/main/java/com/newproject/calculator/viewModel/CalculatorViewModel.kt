@@ -1,4 +1,4 @@
-package com.newproject.calculator
+package com.newproject.calculator.viewModel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -6,22 +6,19 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 
 class CalculatorViewModel : ViewModel() {
+
     var state by mutableStateOf(CalculatorState())
         private set
 
-
     fun onAction(action: CalculatorAction) {
         when (action) {
-            is CalculatorAction.Number -> enterNumber(action.number)
-            is CalculatorAction.Decimal -> enterDecimal()
-            is CalculatorAction.Clear -> state = CalculatorState()
-            is CalculatorAction.Operation -> enterOperation(action.operation)
-            is CalculatorAction.Calculate -> performCalculation()
-            is CalculatorAction.Delete -> performDeletion()
-
+            is CalculatorAction.Number    ->   enterNumber(action.number)
+            is CalculatorAction.Decimal   ->   enterDecimal()
+            is CalculatorAction.Clear     ->   state = CalculatorState()
+            is CalculatorAction.Operation ->   enterOperation(action.operation)
+            is CalculatorAction.Calculate ->   performCalculation()
+            is CalculatorAction.Delete    ->   performDeletion()
         }
-
-
     }
 
     private fun performDeletion() {
@@ -64,9 +61,6 @@ class CalculatorViewModel : ViewModel() {
                 operation = null
             )
         }
-
-
-
     }
 
     private fun enterOperation(operation: CalculatorOperation) {
@@ -82,27 +76,25 @@ class CalculatorViewModel : ViewModel() {
             )
             return
         }
-
-
         if (!state.number2.contains(".") && state.number2.isNotBlank()) {
             state = state.copy(
                 number2 = state.number2 + "."
             )
             return
         }
-
-
     }
 
     private fun enterNumber(number: Int) {
         if (state.operation == null) {
+
             if (state.number1.length >= MAX_NUM_LENGTH) {
                 return
             }
 
-            state = state.copy(
+            state = state.copy (
                 number1 = state.number1 + number
             )
+
             return
         }
 

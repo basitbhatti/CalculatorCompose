@@ -1,4 +1,4 @@
-package com.newproject.calculator
+package com.newproject.calculator.viewModel
 
 sealed class CalculatorAction() {
 

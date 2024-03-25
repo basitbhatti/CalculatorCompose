@@ -24,9 +24,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.newproject.calculator.CalculatorAction
-import com.newproject.calculator.CalculatorOperation
-import com.newproject.calculator.CalculatorViewModel
+import com.newproject.calculator.viewModel.CalculatorAction
+import com.newproject.calculator.viewModel.CalculatorOperation
+import com.newproject.calculator.viewModel.CalculatorViewModel
 import com.newproject.calculator.ui.theme.BG
 import com.newproject.calculator.ui.theme.ButtonBGClear
 import com.newproject.calculator.ui.theme.ButtonBGNum
@@ -111,7 +111,6 @@ fun MainScreen() {
                         fontWeight = FontWeight.Bold
                     )
                 }
-
 
                 Spacer(modifier = Modifier.width(15.dp))
 
