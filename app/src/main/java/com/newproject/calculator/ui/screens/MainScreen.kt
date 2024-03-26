@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -28,10 +29,7 @@ import com.newproject.calculator.viewModel.CalculatorAction
 import com.newproject.calculator.viewModel.CalculatorOperation
 import com.newproject.calculator.viewModel.CalculatorViewModel
 import com.newproject.calculator.ui.theme.BG
-import com.newproject.calculator.ui.theme.ButtonBGClear
-import com.newproject.calculator.ui.theme.ButtonBGNum
 import com.newproject.calculator.ui.theme.ButtonBGOp
-import com.newproject.calculator.ui.theme.TextColor
 
 @Composable
 fun MainScreen() {
@@ -42,7 +40,7 @@ fun MainScreen() {
     Column(
         Modifier
             .fillMaxSize()
-            .background(BG), verticalArrangement = Arrangement.Bottom
+            .background(MaterialTheme.colorScheme.background), verticalArrangement = Arrangement.Bottom
     ) {
 
         Column(
@@ -58,7 +56,7 @@ fun MainScreen() {
                 fontSize = 38.sp,
                 maxLines = 2,
                 lineHeight = 35.sp,
-                color = TextColor,
+                color = MaterialTheme.colorScheme.onPrimary,
                 textAlign = TextAlign.End
             )
         }
@@ -67,7 +65,7 @@ fun MainScreen() {
             Modifier
                 .fillMaxWidth()
                 .weight(0.5f)
-                .background(BG),
+                .background(MaterialTheme.colorScheme.background),
             verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.Start
         ) {
@@ -85,14 +83,14 @@ fun MainScreen() {
                 Button(modifier = Modifier
                     .fillMaxHeight()
                     .weight(0.5f),
-                    colors = ButtonDefaults.buttonColors(containerColor = ButtonBGClear),
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.onTertiary),
                     onClick = {
                         viewModel.onAction(CalculatorAction.Clear)
                     }) {
                     Text(
                         text = "AC",
                         fontSize = 22.sp,
-                        color = TextColor,
+                        color = MaterialTheme.colorScheme.onPrimary,
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -100,14 +98,14 @@ fun MainScreen() {
                 Button(modifier = Modifier
                     .fillMaxHeight()
                     .weight(0.25f),
-                    colors = ButtonDefaults.buttonColors(containerColor = ButtonBGClear),
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.onTertiary),
                     onClick = {
                         viewModel.onAction(CalculatorAction.Delete)
                     }) {
                     Text(
                         text = "Del",
                         fontSize = 22.sp,
-                        color = TextColor,
+                        color = MaterialTheme.colorScheme.onPrimary,
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -136,8 +134,8 @@ fun MainScreen() {
 
                 CalcButton(modifier = Modifier.weight(0.25f),
                     text = "7",
-                    bg = ButtonBGNum,
-                    color = TextColor,
+                    bg = MaterialTheme.colorScheme.primary,
+                    color = MaterialTheme.colorScheme.onPrimary,
                     onClick = {
                         viewModel.onAction(CalculatorAction.Number(7))
 
@@ -147,8 +145,8 @@ fun MainScreen() {
 
                 CalcButton(modifier = Modifier.weight(0.25f),
                     text = "8",
-                    bg = ButtonBGNum,
-                    color = TextColor,
+                    bg = MaterialTheme.colorScheme.primary,
+                    color = MaterialTheme.colorScheme.onPrimary,
                     onClick = {
                         viewModel.onAction(CalculatorAction.Number(8))
                     })
@@ -157,8 +155,8 @@ fun MainScreen() {
 
                 CalcButton(modifier = Modifier.weight(0.25f),
                     text = "9",
-                    bg = ButtonBGNum,
-                    color = TextColor,
+                    bg = MaterialTheme.colorScheme.primary,
+                    color = MaterialTheme.colorScheme.onPrimary,
                     onClick = {
                         viewModel.onAction(CalculatorAction.Number(9))
                     })
@@ -186,8 +184,8 @@ fun MainScreen() {
 
                 CalcButton(modifier = Modifier.weight(0.25f),
                     text = "4",
-                    bg = ButtonBGNum,
-                    color = TextColor,
+                    bg = MaterialTheme.colorScheme.primary,
+                    color = MaterialTheme.colorScheme.onPrimary,
                     onClick = {
                         viewModel.onAction(CalculatorAction.Number(4))
                     })
@@ -196,8 +194,8 @@ fun MainScreen() {
 
                 CalcButton(modifier = Modifier.weight(0.25f),
                     text = "5",
-                    bg = ButtonBGNum,
-                    color = TextColor,
+                    bg = MaterialTheme.colorScheme.primary,
+                    color = MaterialTheme.colorScheme.onPrimary,
                     onClick = {
                         viewModel.onAction(CalculatorAction.Number(5))
                     })
@@ -206,8 +204,8 @@ fun MainScreen() {
 
                 CalcButton(modifier = Modifier.weight(0.25f),
                     text = "6",
-                    bg = ButtonBGNum,
-                    color = TextColor,
+                    bg = MaterialTheme.colorScheme.primary,
+                    color = MaterialTheme.colorScheme.onPrimary,
                     onClick = {
                         viewModel.onAction(CalculatorAction.Number(6))
                     })
@@ -236,8 +234,8 @@ fun MainScreen() {
 
                 CalcButton(modifier = Modifier.weight(0.25f),
                     text = "1",
-                    bg = ButtonBGNum,
-                    color = TextColor,
+                    bg = MaterialTheme.colorScheme.primary,
+                    color = MaterialTheme.colorScheme.onPrimary,
                     onClick = {
                         viewModel.onAction(CalculatorAction.Number(1))
                     })
@@ -247,8 +245,8 @@ fun MainScreen() {
 
                 CalcButton(modifier = Modifier.weight(0.25f),
                     text = "2",
-                    bg = ButtonBGNum,
-                    color = TextColor,
+                    bg = MaterialTheme.colorScheme.primary,
+                    color = MaterialTheme.colorScheme.onPrimary,
                     onClick = {
                         viewModel.onAction(CalculatorAction.Number(2))
                     })
@@ -257,12 +255,10 @@ fun MainScreen() {
 
                 CalcButton(modifier = Modifier.weight(0.25f),
                     text = "3",
-                    bg = ButtonBGNum,
-                    color = TextColor,
+                    bg = MaterialTheme.colorScheme.primary,
+                    color = MaterialTheme.colorScheme.onPrimary,
                     onClick = {
                         viewModel.onAction(CalculatorAction.Number(3))
-
-
                     })
 
                 Spacer(modifier = Modifier.width(15.dp))
@@ -289,8 +285,8 @@ fun MainScreen() {
 
                 CalcButton(modifier = Modifier.weight(0.5f),
                     text = "0",
-                    bg = ButtonBGNum,
-                    color = TextColor,
+                    bg = MaterialTheme.colorScheme.primary,
+                    color = MaterialTheme.colorScheme.onPrimary,
                     onClick = {
                         viewModel.onAction(CalculatorAction.Number(0))
                     })
@@ -299,8 +295,8 @@ fun MainScreen() {
 
                 CalcButton(modifier = Modifier.weight(0.25f),
                     text = ".",
-                    bg = ButtonBGNum,
-                    color = TextColor,
+                    bg = MaterialTheme.colorScheme.primary,
+                    color = MaterialTheme.colorScheme.onPrimary,
                     onClick = {
                         viewModel.onAction(CalculatorAction.Decimal)
                     })
@@ -338,7 +334,6 @@ fun CalcButton(
             text = text, fontSize = 32.sp, color = color, fontWeight = FontWeight.Bold
         )
     }
-
 
 }
 
