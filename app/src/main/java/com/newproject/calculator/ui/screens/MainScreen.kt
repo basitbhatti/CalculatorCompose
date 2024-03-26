@@ -79,7 +79,6 @@ fun MainScreen() {
                     .weight(0.15f),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-
                 Button(modifier = Modifier
                     .fillMaxHeight()
                     .weight(0.5f),
