@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -31,90 +32,93 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.newproject.calculator.navigation.NavigationItem
+import com.newproject.calculator.ui.screens.HistoryScreen
 import com.newproject.calculator.ui.screens.MainScreen
 import com.newproject.calculator.ui.theme.CalculatorTheme
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
+
     @OptIn(ExperimentalMaterial3Api::class)
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             CalculatorTheme {
-
 
                 val list = listOf(
                     NavigationItem.Home, NavigationItem.History
                 )
+                Column(modifier = Modifier.fillMaxSize()) {
 
-
-
-                Scaffold(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(MaterialTheme.colorScheme.background),
-                ) {
-                    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-
-                    var selectedIndex by rememberSaveable {
-                        mutableStateOf(0)
-                    }
-
-                    val scope = rememberCoroutineScope()
-
-                    ModalNavigationDrawer(
-                        drawerContent = {
-                            ModalDrawerSheet {
-                                list.forEachIndexed { index, item ->
-                                    NavigationDrawerItem(
-                                        label = { Text(text = item.name) },
-                                        selected = index == selectedIndex,
-                                        onClick = {
-                                            selectedIndex = index
-                                            scope.launch {
-                                                drawerState.close()
-                                            }
-                                        },
-                                        icon = {
-                                            Icon(
-                                                imageVector = item.icon,
-                                                contentDescription = item.name
-                                            )
-                                        },
-                                        modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
-                                    )
-                                }
-                            }
-                        }, drawerState = drawerState
+                    Scaffold(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(MaterialTheme.colorScheme.background),
                     ) {
+                        val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
-                        Scaffold(topBar = {
-                            TopAppBar(title = { Text(text = "Calculator") }, navigationIcon = {
-                                IconButton(onClick = {
-                                    scope.launch {
-                                        drawerState.open()
+                        var selectedIndex by rememberSaveable {
+                            mutableStateOf(0)
+                        }
+
+                        val scope = rememberCoroutineScope()
+
+                        ModalNavigationDrawer(
+                            drawerContent = {
+                                ModalDrawerSheet {
+                                    list.forEachIndexed { index, item ->
+                                        NavigationDrawerItem(
+                                            label = { Text(text = item.name) },
+                                            selected = index == selectedIndex,
+                                            onClick = {
+                                                selectedIndex = index
+                                                scope.launch {
+                                                    drawerState.close()
+                                                }
+                                            },
+                                            icon = {
+                                                Icon(
+                                                    imageVector = item.icon,
+                                                    contentDescription = item.name
+                                                )
+                                            },
+                                            modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
+                                        )
                                     }
-                                }) {
-                                    Icon(
-                                        imageVector = Icons.Default.Menu,
-                                        contentDescription = "Menu"
-                                    )
-
                                 }
+                            }, drawerState = drawerState
+                        ) {
+
+                            Scaffold(topBar = {
+                                TopAppBar(title = { Text(text = "Calculator") }, navigationIcon = {
+                                    IconButton(onClick = {
+                                        scope.launch {
+                                            drawerState.open()
+                                        }
+                                    }) {
+                                        Icon(
+                                            imageVector = Icons.Default.Menu,
+                                            contentDescription = "Menu"
+                                        )
+                                    }
+                                })
+                            }) {
+                                if (selectedIndex==0){
+                                    MainScreen()
+                                } else if (selectedIndex == 1){
+                                    HistoryScreen()
+                                }
+
                             }
-
-
-                            )
-                        }) {
-
                         }
 
 
                     }
+
                 }
 
-//                MainScreen()
             }
         }
     }
