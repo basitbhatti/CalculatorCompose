@@ -25,11 +25,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.newproject.calculator.ui.theme.BG
+import com.newproject.calculator.ui.theme.ButtonBGOp
 import com.newproject.calculator.viewModel.CalculatorAction
 import com.newproject.calculator.viewModel.CalculatorOperation
 import com.newproject.calculator.viewModel.CalculatorViewModel
-import com.newproject.calculator.ui.theme.BG
-import com.newproject.calculator.ui.theme.ButtonBGOp
 
 @Composable
 fun MainScreen() {
@@ -40,7 +40,8 @@ fun MainScreen() {
     Column(
         Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background), verticalArrangement = Arrangement.Bottom
+            .background(MaterialTheme.colorScheme.background),
+        verticalArrangement = Arrangement.Bottom
     ) {
 
         Column(
