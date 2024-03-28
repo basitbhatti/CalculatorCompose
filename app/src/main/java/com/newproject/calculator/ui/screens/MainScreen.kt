@@ -24,6 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.newproject.calculator.ui.theme.BG
 import com.newproject.calculator.ui.theme.ButtonBGOp
@@ -32,9 +33,8 @@ import com.newproject.calculator.viewModel.CalculatorOperation
 import com.newproject.calculator.viewModel.CalculatorViewModel
 
 @Composable
-fun MainScreen() {
+fun MainScreen(viewModel : CalculatorViewModel) {
 
-    val viewModel = viewModel<CalculatorViewModel>()
     val state = viewModel.state
 
     Column(
@@ -341,5 +341,4 @@ fun CalcButton(
 @Preview
 @Composable
 private fun MainPreview() {
-    MainScreen()
 }

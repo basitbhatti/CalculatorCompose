@@ -4,20 +4,28 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.newproject.calculator.room.Calculation
+import com.newproject.calculator.room.CalculationDao
+import kotlinx.coroutines.launch
 
-class CalculatorViewModel : ViewModel() {
+class CalculatorViewModel(
+    val dao: CalculationDao
+) : ViewModel() {
 
     var state by mutableStateOf(CalculatorState())
         private set
 
+    val list : List<Calculation> = dao.getCalculations()
+
     fun onAction(action: CalculatorAction) {
         when (action) {
-            is CalculatorAction.Number    ->   enterNumber(action.number)
-            is CalculatorAction.Decimal   ->   enterDecimal()
-            is CalculatorAction.Clear     ->   state = CalculatorState()
-            is CalculatorAction.Operation ->   enterOperation(action.operation)
-            is CalculatorAction.Calculate ->   performCalculation()
-            is CalculatorAction.Delete    ->   performDeletion()
+            is CalculatorAction.Number -> enterNumber(action.number)
+            is CalculatorAction.Decimal -> enterDecimal()
+            is CalculatorAction.Clear -> state = CalculatorState()
+            is CalculatorAction.Operation -> enterOperation(action.operation)
+            is CalculatorAction.Calculate -> performCalculation()
+            is CalculatorAction.Delete -> performDeletion()
         }
     }
 
@@ -41,8 +49,8 @@ class CalculatorViewModel : ViewModel() {
         val number1 = state.number1.toDoubleOrNull()
         val number2 = state.number2.toDoubleOrNull()
 
-        if (number1 != null && number2 != null){
-            val result = when(state.operation) {
+        if (number1 != null && number2 != null) {
+            val result = when (state.operation) {
 
                 is CalculatorOperation.Add -> number1 + number2
 
@@ -55,11 +63,24 @@ class CalculatorViewModel : ViewModel() {
                 null -> return
             }
 
+            val calculation = Calculation(
+                number1 = number1.toString(),
+                number2 = number2.toString(),
+                operation = state.operation,
+                answer = result.toString()
+            )
+
+            viewModelScope.launch {
+                dao.upsert(calculation)
+            }
+
             state = state.copy(
                 number1 = result.toString().take(15),
                 number2 = "",
                 operation = null
             )
+
+
         }
     }
 
@@ -91,7 +112,7 @@ class CalculatorViewModel : ViewModel() {
                 return
             }
 
-            state = state.copy (
+            state = state.copy(
                 number1 = state.number1 + number
             )
 

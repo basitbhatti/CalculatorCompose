@@ -29,6 +29,8 @@ android {
             )
         }
     }
+
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -40,7 +42,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.4.1"
     }
     packaging {
         resources {
@@ -68,10 +70,18 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation("androidx.compose.material:material-icons-extended:1.6.3")
-    val room_version = "2.6.1"
+    val room_version = "2.4.0-beta01"
 
 
     implementation("androidx.room:room-runtime:$room_version")
-    implementation("androidx.room:room-compiler:$room_version")
+    annotationProcessor("androidx.room:room-compiler:$room_version")
 
+    constraints {
+        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.0") {
+            because("kotlin-stdlib-jdk7 is now a part of kotlin-stdlib")
+        }
+        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.0") {
+            because("kotlin-stdlib-jdk8 is now a part of kotlin-stdlib")
+        }
+    }
 }

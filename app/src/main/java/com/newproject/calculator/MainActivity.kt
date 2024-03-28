@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -31,13 +32,36 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.room.Room
 import com.newproject.calculator.navigation.NavigationItem
+import com.newproject.calculator.room.CalculationDatabase
 import com.newproject.calculator.ui.screens.HistoryScreen
 import com.newproject.calculator.ui.screens.MainScreen
 import com.newproject.calculator.ui.theme.CalculatorTheme
+import com.newproject.calculator.viewModel.CalculatorViewModel
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
+
+    private val db by lazy {
+        Room.databaseBuilder(
+            applicationContext,
+            CalculationDatabase::class.java,
+            "calculations.db"
+        ).build()
+    }
+
+    private val viewModel by viewModels<CalculatorViewModel> (
+        factoryProducer = {
+            object : ViewModelProvider.Factory{
+                override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                    return CalculatorViewModel(db.dao) as T
+                }
+            }
+        }
+    )
 
     @OptIn(ExperimentalMaterial3Api::class)
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -105,10 +129,10 @@ class MainActivity : ComponentActivity() {
                                     }
                                 })
                             }) {
-                                if (selectedIndex==0){
-                                    MainScreen()
-                                } else if (selectedIndex == 1){
-                                    HistoryScreen()
+                                if (selectedIndex == 0) {
+                                    MainScreen(viewModel = viewModel)
+                                } else if (selectedIndex == 1) {
+                                    HistoryScreen(viewModel)
                                 }
 
                             }
@@ -127,5 +151,4 @@ class MainActivity : ComponentActivity() {
 @Preview
 @Composable
 private fun MainScreenPrev() {
-    MainScreen()
 }
