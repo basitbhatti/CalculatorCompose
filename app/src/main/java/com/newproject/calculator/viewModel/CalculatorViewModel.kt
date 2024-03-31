@@ -1,5 +1,6 @@
 package com.newproject.calculator.viewModel
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -7,7 +8,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.newproject.calculator.room.Calculation
 import com.newproject.calculator.room.CalculationDao
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class CalculatorViewModel(
     val dao: CalculationDao
@@ -16,7 +19,11 @@ class CalculatorViewModel(
     var state by mutableStateOf(CalculatorState())
         private set
 
-    val list : List<Calculation> = dao.getCalculations()
+    suspend fun list(): List<Calculation> {
+        return withContext(Dispatchers.IO) {
+            dao.getCalculations()
+        }
+    }
 
     fun onAction(action: CalculatorAction) {
         when (action) {
@@ -66,11 +73,15 @@ class CalculatorViewModel(
             val calculation = Calculation(
                 number1 = number1.toString(),
                 number2 = number2.toString(),
-                operation = state.operation,
+                operation = state.operation!!.symbol,
                 answer = result.toString()
             )
 
             viewModelScope.launch {
+                Log.d(
+                    "InsertingCalc",
+                    calculation.number1 + calculation.operation + calculation.number2
+                )
                 dao.upsert(calculation)
             }
 

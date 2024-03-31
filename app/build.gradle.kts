@@ -1,9 +1,13 @@
+import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
+
 plugins {
+    id("com.google.devtools.ksp")
+
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
 }
-
 android {
+
     namespace = "com.newproject.calculator"
     compileSdk = 34
 
@@ -30,13 +34,12 @@ android {
         }
     }
 
-
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
     buildFeatures {
         compose = true
@@ -70,10 +73,13 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation("androidx.compose.material:material-icons-extended:1.6.3")
+
     val room_version = "2.4.0-beta01"
 
-
     implementation("androidx.room:room-runtime:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
     annotationProcessor("androidx.room:room-compiler:$room_version")
+    annotationProcessor("android.arch.persistence.room:compiler:1.1.1")
+    ksp("androidx.room:room-compiler:2.5.0")
 
 }
