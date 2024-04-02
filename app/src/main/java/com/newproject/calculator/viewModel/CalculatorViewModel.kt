@@ -1,6 +1,7 @@
 package com.newproject.calculator.viewModel
 
 import android.util.Log
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -19,9 +20,26 @@ class CalculatorViewModel(
     var state by mutableStateOf(CalculatorState())
         private set
 
+//    suspend fun list(): List<Calculation> {
+//        return withContext(Dispatchers.IO) {
+//            dao.getCalculations()
+//        }
+//    }
+
+    private val _calculations = mutableStateOf<List<Calculation>>(emptyList())
+    val calculations: State<List<Calculation>> = _calculations
+
+    // Your existing suspend function
     suspend fun list(): List<Calculation> {
         return withContext(Dispatchers.IO) {
             dao.getCalculations()
+        }
+    }
+
+    // Function to fetch and update the calculations
+    fun fetchCalculations() {
+        viewModelScope.launch {
+            _calculations.value = list() // Use your suspend function here
         }
     }
 

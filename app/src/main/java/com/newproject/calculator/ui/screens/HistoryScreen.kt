@@ -1,6 +1,6 @@
 package com.newproject.calculator.ui.screens
 
-import android.util.Log
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,8 +14,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,7 +25,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.newproject.calculator.room.Calculation
 import com.newproject.calculator.viewModel.CalculatorViewModel
-import kotlinx.coroutines.launch
 
 @Composable
 fun HistoryScreen(viewModel: CalculatorViewModel) {
@@ -35,18 +32,20 @@ fun HistoryScreen(viewModel: CalculatorViewModel) {
     val scope = rememberCoroutineScope()
 
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        scope.launch {
-            if (viewModel.list() != null){
-               viewModel.list().forEach {
-                   val calc = it
-                   Log.d("TAGDBB", "${calc.number1} ${calc.operation} ${calc.number2}")
-               }
-            }
+        Text(text = "This screen is not completed yet.")
 
-        }
+//        scope.launch {
+//            if (viewModel.list() != null){
+//                val calc = viewModel.list().get(0)
+//                Log.d("TAGDBB", "${calc.number1} ${calc.operation} ${calc.number2}")
+//            }
+//
+//        }
     }
 }
 

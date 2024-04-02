@@ -81,5 +81,7 @@ dependencies {
     annotationProcessor("androidx.room:room-compiler:$room_version")
     annotationProcessor("android.arch.persistence.room:compiler:1.1.1")
     ksp("androidx.room:room-compiler:2.5.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1")
 
 }
