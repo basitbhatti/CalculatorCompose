@@ -39,12 +39,15 @@ fun HistoryScreen(viewModel: CalculatorViewModel) {
     ) {
 
         scope.launch {
-            val calc = viewModel.list().get(0)
-            Log.d("TAGDBB", "${calc.number1} ${calc.operation} ${calc.number2}")
+            if (viewModel.list() != null){
+               viewModel.list().forEach {
+                   val calc = it
+                   Log.d("TAGDBB", "${calc.number1} ${calc.operation} ${calc.number2}")
+               }
+            }
+
         }
-
     }
-
 }
 
 @Composable

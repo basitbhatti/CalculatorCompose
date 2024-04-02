@@ -7,12 +7,12 @@ import androidx.room.Query
 
 @Dao
 interface CalculationDao {
+
     @Insert()
     suspend fun upsert(calculation: Calculation)
 
     @Delete
     suspend fun delete(calculation: Calculation)
-
 
     @Query("SELECT * FROM calculations_table")
     fun getCalculations(): List<Calculation>
